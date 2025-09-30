@@ -43,7 +43,7 @@ const eventSchema = new mongoose.Schema({
         enum: ['Ingreso','Gasto'],
         unique: false,
         required: true
-    }
+    },
 })
 
 const Event = mongoose.model('Event', eventSchema);
