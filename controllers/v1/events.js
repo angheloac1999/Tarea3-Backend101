@@ -4,6 +4,11 @@ const { query, validationResult } = require('express-validator');
 /** MODELS **/
 const Events = require('../../models/events');
 
+const jwtAuthMiddleware = require('../../middlewares/jwtAuth');
+
+router.use(jwtAuthMiddleware);
+
+
 // Entity: Events
 router.get('/', (req, res) => {
     return Events.getAllEvents((err, events) => {

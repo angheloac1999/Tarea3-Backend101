@@ -9,10 +9,9 @@ const Users = require('../../models/users');
 const apiKeyMiddleware = require('../../middlewares/apiKey');
 const basicAuthMiddleware = require('../../middlewares/basicAuth');
 const jwtAuthMiddleware = require('../../middlewares/jwtAuth');
-const { uuid } = require('zod');
 
 let users = [{
-    id: uuid.v4(),
+    id: 1,
     name: 'Carlos',
     email: 'carlos@gmail.com',
     age: 20
@@ -20,12 +19,21 @@ let users = [{
 
 const jwtSecret = 'thisismysecret';
 
-router.use(apiKeyMiddleware);
 
+router.get('/token', basicAuthMiddleware, (req, res) => {
+    jwt.sign({user: req.user}, jwtSecret, {expiresIn: '1h'}, (err, token) => {
+        if (err) {
+            return res.status(500).json({code: 'ER', message: 'Error generating token!'})
+        }
+        res.json({code: 'OK', message: 'Token generated successfully!', data: {token}})
+    })
+})
+
+router.use(jwtAuthMiddleware);
 
 // Entity: users 
 /** */
-router.get('/', jwtAuthMiddleware, (req, res) => {
+router.get('/', (req, res) => {
     return Users.getAllUsers((err, users) => {
         if(err){
             return res.status(500).json({ code: 'ER', message: 'Error getting users!'});
@@ -33,15 +41,6 @@ router.get('/', jwtAuthMiddleware, (req, res) => {
         res.json({ code: 'OK', message: 'Users are available!', data:{ users}});
     });
 });
-
-router.get('/token', basicAuthMiddleware, (req, res) => {
-    jwt.sign({user: req.user}, jwtSecret, {expiresIn: '1h'}, (err, token) => {
-        if (err) {
-            return res.status(500).json({code: 'ER', message: 'Error generating token!'})
-        }
-        res.json({code: 'OK', message: 'Token generated successfully!'})
-    })
-})
 
 router.get('/query', query('id').notEmpty(), (req, res) => {
 

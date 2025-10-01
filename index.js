@@ -9,14 +9,14 @@ const performance = require('./middlewares/performance');
 
 /** Controllers */
 const health = require('./middlewares/health');
-const eventsV1 = require('./controllers/v1/events');
 const usersV1 = require('./controllers/v1/users');
+const eventsV1 = require('./controllers/v1/events');
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++//
 const app = express();
 
 app.use(express.json());
-
 
 
 const PORT = 3030;

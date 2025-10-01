@@ -10,8 +10,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const userSchema = new mongoose.Schema({
     id: {
-        type: String,
-        default: uuidv4,
+        type: Number,
         unique: true,
         required: false
     },
@@ -49,8 +48,8 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 const saveUser = (user, callback) => {
-    const { name, email, age, password, apiKey } = user;
-    const newUser = new User({ name, email, age, password, apiKey });
+    const { id, name, email, age, password, apiKey } = user;
+    const newUser = new User({ id, name, email, age, password, apiKey });
     // Guardamos en MongoDB
     newUser.save()
     .then(() => {
@@ -101,6 +100,7 @@ const updateUser = (id, user, callback) => {
 }
 
 const findUserByApiKey = (apiKey, callback) => { 
+    console.log(apiKey)
     User.findOne({ apiKey })
    .then(result => {
     console.log('🔍 Encontrado:', result);
@@ -113,8 +113,8 @@ const findUserByApiKey = (apiKey, callback) => {
    });
 }
 
-const findUserByEmail = (Email, callback) => { 
-    User.findOne({ Email })
+const findUserByEmail = (email, callback) => { 
+    User.findOne({ email })
    .then(result => {
     console.log('🔍 Encontrado:', result);
     return callback(null, result);

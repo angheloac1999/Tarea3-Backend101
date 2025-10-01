@@ -12,7 +12,6 @@ module.exports = (req, res, next) => {
         res.json(401).json({code: 'UA', message: 'Authorization type is not supported'})
     }
     const decoded = jwt.verify(token, jwtSecret);
-    req.user = user;
+    req.user = decoded.user;
     next();
-
 }

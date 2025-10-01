@@ -1,7 +1,8 @@
  const Users = require('../models/users');
 
-return module.exports = (req, res, next) => {
-    const apiKey = req.query.apikey || req.headers['x-api-key'];
+module.exports = (req, res, next) => {
+    const apiKey = req.query.apikey || req.Headers['x-api-key'];
+    console.log('API Key:', apiKey);
     if (!apiKey) {
         return res.status(401).json({code: 'UA', message: 'API key is required'});
     }

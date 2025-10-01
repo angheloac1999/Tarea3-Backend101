@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     if (!authHeader) {
         return res.status(401).json({code: 'UA', message: 'Authorization header is required!'})
     }
-    const [type, credentials] = authHeader.split('');
+    const [type, credentials] = authHeader.split(' ');
     if (type !== 'Basic') {
         return res.status(401).json({code: 'UA', message: 'Authorization type is not supported!'})
     }
